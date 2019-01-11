@@ -13,6 +13,11 @@ Vue.config.productionTip = false
 import index from './components/index.vue'
 import detail from './components/02.details.vue'
 import login from './components/03.login.vue'
+import userCenter from './components/04.userCenter.vue'
+// 嵌套路由的组件
+import centerIndex from './components/05.userCenterIndex.vue'
+import centerOrder from './components/06.userCenterOrder.vue'
+import centerOrderDetail from './components/07.userCenterOrderDetail.vue'
 new Vue({
   render: h => h(App),
   // 挂载路由对象
@@ -22,7 +27,7 @@ new Vue({
       //   path:'/',
       //   component:index
       // },
-      // 使用重定向 把/ 定位到 /index
+      // 使用重定向 把/ 定位到 /inW13 ex
       // 重定向居多 多个地址对应到同一个组件时
       {
         path: '/',
@@ -39,6 +44,29 @@ new Vue({
       {
         path: '/login',
         component: login
+      },
+      {
+        path: '/userCenter',
+        component: userCenter,
+        children: [{
+            // 匹配到 /userCenter/index
+            // path:'index', // 不要写 /
+            path: '', // 不要写 /
+            // 重定向
+            redirect: 'index'
+          },
+          {
+            path: 'index',
+            component: centerIndex
+          }, {
+            path: 'order',
+            component: centerOrder
+          },
+          {
+            path: 'orderDetail',
+            component: centerOrderDetail
+          },
+        ]
       }
     ]
   })
