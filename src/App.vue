@@ -148,7 +148,7 @@
       </div>
     </div>
     <!-- 路由的出口 -->
-    
+    <router-view></router-view>
     <!-- 底部 -->
     <div class="footer">
       <div class="section">
