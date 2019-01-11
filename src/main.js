@@ -7,6 +7,22 @@ Vue.use(VueRouter);
 // 全局样式
 import './assets/statics/site/css/style.css';
 
+// 导入element-ui
+import ElementUI from 'element-ui'; // js
+import 'element-ui/lib/theme-chalk/index.css';//css
+Vue.use(ElementUI); // vue的插件
+
+// 全局导入axios
+import axios from "axios";
+// 设置到了Vue的原型上 目的是让所有的 Vue实例共享
+Vue.prototype.$axios = axios;
+
+// axios 支持设置基地址
+axios.defaults.baseURL = 'http://111.230.232.110:8899/';
+
+
+
+
 Vue.config.productionTip = false
 
 // 导入额外的组件 路由使用的
@@ -38,7 +54,7 @@ new Vue({
         component: index
       },
       {
-        path: '/detail',
+        path: '/detail/:id',
         component: detail
       },
       {

@@ -366,9 +366,29 @@
   </div>
 </template>
 <script>
+// import axios from 'axios';
 export default {
   // name属性
-  name: "detail"
+  name: "detail",
+  data() {
+    return {
+      id: ""
+    };
+  },
+  // 生命周期函数
+  created() {
+    // console.log(this.$route);
+    this.id = this.$route.params.id;
+
+    // 根据id 查询详细信息
+    // console.log(this.$axios);
+    this.$axios.get(`site/goods/getgoodsinfo/${this.id}`).then(res => {
+      console.log(res);
+      // 渲染到页面上
+      // data中定义数据
+      // 设置data中的数据
+    });
+  }
 };
 </script>
 <style>

@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- 测试elui -->
+    <el-button type="success">成功按钮</el-button>
     <div class="section">
       <div class="location">
         <span>当前位置：</span>
@@ -139,90 +141,37 @@
           </div>
           <!--幻灯片-->
           <div class="left-705">
-            <div class="banner-img">
-              <div
-                id="focus-box"
-                class="focus-box"
+            <!-- 使用el的轮播图 -->
+            <el-carousel height="341px">
+              <el-carousel-item
+                v-for="item in sliderlist"
+                :key="item.id"
               >
-                <ul class="slides">
-                  <li
-                    class=""
-                    style="width: 100%;height:100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; z-index: 1;"
-                  >
-                    <a href="/goods.html">
-                      <img
-                        style="width: 100%;height:100%;"
-                        src="http://39.108.135.214:8899/imgs/SJ4EgwosX0wTqvyAvhtFGT1w.jpg"
-                        draggable="false"
-                      >
-                    </a>
-                  </li>
-                  <li
-                    style="width: 100%;height:100%; float: left; margin-right: -100%; position: relative; opacity: 1; display: block; z-index: 2;"
-                    class="flex-active-slide"
-                  >
-                    <a href="/goods.html">
-                      <img
-                        style="width: 100%;height:100%;"
-                        src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200314272543.jpg"
-                        draggable="false"
-                      >
-                    </a>
-                  </li>
-                </ul>
-                <ol class="flex-control-nav flex-control-paging">
-                  <li>
-                    <a class="">1</a>
-                  </li>
-                  <li>
-                    <a class="flex-active">2</a>
-                  </li>
-                </ol>
-              </div>
-
-            </div>
+                <img
+                  :src="item.img_url"
+                  alt=""
+                >
+              </el-carousel-item>
+            </el-carousel>
           </div>
           <!--/幻灯片-->
           <div class="left-220">
             <ul class="side-img-list">
-              <li>
+              <li
+                v-for="(item, index) in toplist"
+                :key="item.id"
+              >
                 <div class="img-box">
-                  <label>1</label>
-                  <img src="http://39.108.135.214:8899/imgs/SJ4EgwosX0wTqvyAvhtFGT1w.jpg">
+                  <label>{{index+1}}</label>
+                  <router-link :to="'/detail/'+item.id">
+                    <img :src="item.img_url">
+                  </router-link>
                 </div>
                 <div class="txt-box">
-                  <a href="/goods/show-98.html">骆驼男装2017秋季新款运动休闲纯色夹克青年宽松长袖针织开衫卫衣</a>
-                  <span>2017-09-26</span>
-                </div>
-              </li>
-              <li>
-                <div class="img-box">
-                  <label>2</label>
-                  <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200314272543.jpg">
-                </div>
-                <div class="txt-box">
-                  <a href="/goods/show-98.html">奔腾（BNTN） 380功放+纽约至尊 套装家庭影院</a>
-                  <span>2015-04-20</span>
-                </div>
-              </li>
-              <li>
-                <div class="img-box">
-                  <label>3</label>
-                  <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200318534459.jpg">
-                </div>
-                <div class="txt-box">
-                  <a href="/goods/show-98.html">飞利浦（PHILIPS）DVP3690 全高清DVD影碟机播放器</a>
-                  <span>2015-04-20</span>
-                </div>
-              </li>
-              <li>
-                <div class="img-box">
-                  <label>4</label>
-                  <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200258403759.jpg">
-                </div>
-                <div class="txt-box">
-                  <a href="/goods/show-98.html">三星（SAMSUNG）UA40HU5920JXXZ 40英寸4K超高清</a>
-                  <span>2015-04-20</span>
+                  <a href="/goods/show-98.html">{{item.title}}</a>
+                  <!-- <span>{{item.add_time}}</span> -->
+                  <!-- | 管道符 -->
+                  <span>{{item.add_time | beautifyTime}}</span>
                 </div>
               </li>
             </ul>
@@ -663,10 +612,55 @@
   </div>
 </template>
 <script>
+// 导入axios
+// import axios from "axios";
 export default {
-    // name属性
-    name:'index'
+  // name属性
+  name: "index",
+  data() {
+    return {
+      // 分类
+      catelist: [],
+      // 轮播图
+      sliderlist: [],
+      // 热卖
+      toplist: []
+    };
+  },
+  // 过滤器
+  filters: {
+    beautifyTime(value) {
+      console.log(value);
+      // value就是处理的数据(时间) // 2017-09-26T12:26:30.000Z
+      // return '啊 美丽的时间'
+
+      // 把T切掉 只要左边的部分
+      let timeArr = value.split("T");
+      // 返回数组的第一项
+      return timeArr[0];
+    }
+  },
+  // 生命周期函数
+  created() {
+    // this.$axios.get("http://111.230.232.110:8899/site/goods/gettopdata/goods")
+    this.$axios.get("site/goods/gettopdata/goods")
+      .then(res => {
+        // console.log(res);
+        // 分类
+        this.catelist = res.data.message.catelist;
+        // 轮播图
+        this.sliderlist = res.data.message.sliderlist;
+        // 热卖
+        this.toplist = res.data.message.toplist;
+      });
+  }
 };
 </script>
 <style>
+/* 轮播图的图片大小 */
+.el-carousel__item img {
+  width: 705px;
+  height: 341px;
+  display: block;
+}
 </style>
