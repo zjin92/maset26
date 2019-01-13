@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 测试elui -->
-    <el-button type="success">成功按钮</el-button>
+    <!-- <el-button type="success">成功按钮</el-button> -->
     <div class="section">
       <div class="location">
         <span>当前位置：</span>
@@ -662,5 +662,7 @@ export default {
   width: 705px;
   height: 341px;
   display: block;
+  
+   
 }
 </style>
